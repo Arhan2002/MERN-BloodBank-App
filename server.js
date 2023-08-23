@@ -4,6 +4,7 @@ const colors = require("colors");
 const morgan = require("morgan");
 const cors = require("cors");
 const connectDB = require("./config/db");
+const path = require('path')
 //dot config
 dotenv.config();
 
@@ -13,12 +14,12 @@ connectDB();
 //rest object
 const app = express();
 
-app.use(cors(
-  {origin:["https://deploy-mern-1whq.vercel.app"],
-   methods:["POST","GET"],
-   credentials: true
-  }
-  ));
+app.use(express.static(path.join(__dirname,'./client/build')))
+
+
+app.get('*',function(req,res){
+  res.sendFile(path.join(__dirname,"./client/build/index.html"))
+})
 
 //middlewares
 app.use(express.json());
